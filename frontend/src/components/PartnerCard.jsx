@@ -23,7 +23,7 @@ const formatEUR = (value) => {
       useGrouping: "always",
     }).format(Number(value));
   } catch {
-    return `€${Number(value).toFixed(2)}`;
+    return `\u20ac${Number(value).toFixed(2)}`;
   }
 };
 
@@ -61,7 +61,7 @@ export const PartnerCard = ({ partner, onEdit, onDelete, index = 0 }) => {
       <div className="flex items-start justify-between mb-4">
         <div className="flex items-center gap-3">
           <span className="text-3xl leading-none" aria-hidden="true">
-            {partner.flag || "🌐"}
+            {partner.flag || "\ud83c\udf10"}
           </span>
           <div>
             <p className="text-[10px] uppercase tracking-[0.16em] text-slate-500 font-semibold">
