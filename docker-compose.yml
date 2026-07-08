@@ -1,0 +1,27 @@
+version: "3.8"
+
+services:
+  mongodb:
+    image: mongo:7
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongo_data:/data/db
+
+  app:
+    build:
+      context: .
+      args:
+        REACT_APP_BACKEND_URL: ""
+    ports:
+      - "8000:8000"
+    environment:
+      - MONGO_URL=mongodb://mongodb:27017
+      - DB_NAME=qmd_partners
+      - JWT_SECRET=qmd-hakomed-secret-2026-change-in-production
+      - PORT=8000
+    depends_on:
+      - mongodb
+
+volumes:
+  mongo_data:
