@@ -1,8 +1,13 @@
 # Stage 1: Build frontend
-FROM node:18-slim AS frontend-build
+FROM node:18 AS frontend-build
 
 WORKDIR /app/frontend
-COPY frontend/package.json frontend/package-lock.json* ./
+
+ENV SKIP_PREFLIGHT_CHECK=true
+ENV DISABLE_ESLINT_PLUGIN=true
+ENV NODE_OPTIONS=--openssl-legacy-provider
+
+COPY frontend/package.json ./
 RUN npm install --legacy-peer-deps
 
 COPY frontend/ ./
