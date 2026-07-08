@@ -52,8 +52,8 @@ const setCellStyle = (worksheet, cellRef, fillHex, fontHex, bold = false) => {
 export function exportToExcel(partners, filename = "qmd-global-partners") {
   // Build data with a legend at the top so meanings travel with the file
   const legendRows = [
-    ["qmd\u00ae Global Partner Dashboard \u2014 Hakomed Italia"],
-    [`Exported: ${new Date().toLocaleString("en-GB")}   \u00b7   ${partners.length} partners`],
+    ["qmd® Global Partner Dashboard — Hakomed Italia"],
+    [`Exported: ${new Date().toLocaleString("en-GB")}   ·   ${partners.length} partners`],
     [],
     ["Color Legend:"],
     ["Current", "Active partner"],
@@ -176,7 +176,7 @@ export function exportToPDF(partners, filename = "qmd-global-partners") {
     year: "numeric",
   });
   doc.text(
-    `Hakomed Italia \u2014 Exported ${dateStr} \u2014 ${partners.length} partners`,
+    `Hakomed Italia — Exported ${dateStr} — ${partners.length} partners`,
     40,
     58
   );
@@ -189,9 +189,9 @@ export function exportToPDF(partners, filename = "qmd-global-partners") {
   doc.text("Color Legend:", 40, legendY);
 
   const legendItems = [
-    { label: "Current \u2014 Active", fill: [232, 245, 233], font: [46, 125, 50] },
-    { label: "Standby \u2014 On hold", fill: [255, 248, 225], font: [180, 130, 12] },
-    { label: "Old \u2014 Inactive", fill: [255, 235, 238], font: [183, 28, 28] },
+    { label: "Current — Active", fill: [232, 245, 233], font: [46, 125, 50] },
+    { label: "Standby — On hold", fill: [255, 248, 225], font: [180, 130, 12] },
+    { label: "Old — Inactive", fill: [255, 235, 238], font: [183, 28, 28] },
   ];
   let cursorX = 130;
   doc.setFont("helvetica", "bold");
@@ -274,7 +274,7 @@ export function exportToPDF(partners, filename = "qmd-global-partners") {
     doc.setFontSize(8);
     doc.setTextColor(120, 120, 120);
     doc.text(
-      `\u00a9 2026 Hakomed Italia \u2014 qmd\u00ae Global Partner Network \u2014 Page ${i} of ${pageCount}`,
+      `© 2026 Hakomed Italia — qmd® Global Partner Network — Page ${i} of ${pageCount}`,
       pageWidth / 2,
       pageHeight - 20,
       { align: "center" }
