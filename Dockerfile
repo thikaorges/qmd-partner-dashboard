@@ -1,10 +1,9 @@
-# Force rebuild - bust cache
 # Stage 1: Build frontend
 FROM node:20-alpine AS frontend-build
 
 WORKDIR /app/frontend
 COPY frontend/package.json frontend/jsconfig.json frontend/tailwind.config.js frontend/postcss.config.js frontend/craco.config.js ./
-RUN npm install --legacy-peer-deps 2>&1 | tail -5
+RUN npm install --legacy-peer-deps && npm install ajv@^8.17.1 --legacy-peer-deps
 
 COPY frontend/public ./public
 COPY frontend/src ./src
