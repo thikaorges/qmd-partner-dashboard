@@ -26,8 +26,8 @@ JWT_ALGORITHM = "HS256"
 JWT_EXPIRE_HOURS = 24
 PORT = int(os.environ.get("PORT", "8000"))
 
-# Password hashing
-pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
+# Password hashing - using pbkdf2_sha256 (no external C dependency needed)
+pwd_context = CryptContext(schemes=["pbkdf2_sha256"], deprecated="auto")
 
 # Default whitelisted users
 DEFAULT_USERS = [
