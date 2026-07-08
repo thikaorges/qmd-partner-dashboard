@@ -1,0 +1,9 @@
+node_modules/
+build/
+__pycache__/
+*.pyc
+.env
+.env.local
+venv/
+.venv/
+bundle.js.map
