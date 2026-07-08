@@ -32,6 +32,10 @@
     "tailwindcss-animate": "^1.0.7",
     "xlsx-js-style": "^1.2.0"
   },
+  "overrides": {
+    "ajv": "^8.17.1",
+    "ajv-keywords": "^5.1.0"
+  },
   "scripts": {
     "start": "craco start",
     "build": "craco build",

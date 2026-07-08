@@ -1,5 +1,5 @@
 # Stage 1: Build frontend
-FROM node:18 AS frontend-build
+FROM node:18-bullseye AS frontend-build
 
 WORKDIR /app/frontend
 
@@ -9,6 +9,7 @@ ENV NODE_OPTIONS=--openssl-legacy-provider
 
 COPY frontend/package.json ./
 RUN npm install --legacy-peer-deps
+RUN npm install ajv@^8.17.1 ajv-keywords@^5.1.0 --legacy-peer-deps
 
 COPY frontend/ ./
 RUN npm run build
