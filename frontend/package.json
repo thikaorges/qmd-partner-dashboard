@@ -10,6 +10,8 @@
     "@radix-ui/react-select": "^2.1.0",
     "@radix-ui/react-slot": "^1.1.0",
     "ajv": "^8.17.1",
+    "ajv-keywords": "^5.1.0",
+    "ajv-errors": "^3.0.0",
     "axios": "^1.7.0",
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.1.0",
@@ -33,6 +35,9 @@
     "build": "craco build",
     "test": "craco test",
     "eject": "react-scripts eject"
+  },
+  "overrides": {
+    "ajv": "^8.17.1"
   },
   "browserslist": {
     "production": [
