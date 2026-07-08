@@ -3,7 +3,7 @@ FROM node:20-alpine AS frontend-build
 
 WORKDIR /app/frontend
 COPY frontend/package.json frontend/jsconfig.json frontend/tailwind.config.js frontend/postcss.config.js frontend/craco.config.js ./
-RUN npm install --legacy-peer-deps && npm install ajv@^8.17.1 --legacy-peer-deps
+RUN npm install --legacy-peer-deps
 
 COPY frontend/public ./public
 COPY frontend/src ./src
