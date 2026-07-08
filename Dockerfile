@@ -1,3 +1,4 @@
+# Cache buster: 2026-07-08T12:05:00Z
 # Stage 1: Build frontend
 FROM node:18-alpine AS frontend-build
 
@@ -30,4 +31,4 @@ COPY --from=frontend-build /app/frontend/build ./static
 
 EXPOSE 8000
 
-CMD python -m uvicorn backend.main:app --host 0.0.0.0 --port ${PORT:-8000}
+CMD ["python", "-m", "uvicorn", "backend.main:app", "--host", "0.0.0.0", "--port", "8000"]
