@@ -46,7 +46,6 @@ export const PartnerFormDialog = ({ open, onOpenChange, initialData, onSubmit, i
   const setField = (key, value) => {
     setForm((prev) => {
       const next = { ...prev, [key]: value };
-      // Auto-fill flag when country changes and no custom flag provided
       if (key === "country" && (!prev.flag || prev.flag === getFlag(prev.country))) {
         next.flag = getFlag(value);
       }
@@ -96,7 +95,7 @@ export const PartnerFormDialog = ({ open, onOpenChange, initialData, onSubmit, i
           <DialogDescription className="text-slate-600">
             {isEdit
               ? "Update the partner details below."
-              : "Enter details for the new qmd® Global Partner."}
+              : "Enter details for the new qmd\u00ae Global Partner."}
           </DialogDescription>
         </DialogHeader>
 
@@ -141,7 +140,7 @@ export const PartnerFormDialog = ({ open, onOpenChange, initialData, onSubmit, i
                 data-testid="form-input-flag"
                 value={form.flag}
                 onChange={(e) => setField("flag", e.target.value)}
-                placeholder="🇦🇹"
+                placeholder="\ud83c\udde6\ud83c\uddf9"
                 className="mt-1.5"
               />
             </div>
@@ -204,7 +203,7 @@ export const PartnerFormDialog = ({ open, onOpenChange, initialData, onSubmit, i
 
             <div className="md:col-span-2">
               <Label htmlFor="revenue_2026" className="text-[#0D1B2A] font-medium">
-                Fatturato 2026 (€)
+                Fatturato 2026 (\u20ac)
               </Label>
               <Input
                 id="revenue_2026"
