@@ -255,7 +255,7 @@ const Dashboard = () => {
                 <span className="font-display font-bold text-5xl md:text-6xl qmd-logo-mark leading-none">
                   qmd
                 </span>
-                <span className="text-[#C9A84C] font-display text-2xl leading-none">\u00ae</span>
+                <span className="text-[#C9A84C] font-display text-2xl leading-none">®</span>
               </div>
               <div className="hidden md:block h-14 w-px bg-white/15" />
               <div className="hidden md:block">
@@ -394,22 +394,22 @@ const Dashboard = () => {
             <div className="flex items-center gap-2 px-3 py-1.5 rounded-full bg-emerald-50 border border-emerald-200" data-testid="legend-current">
               <span className="h-2.5 w-2.5 rounded-full bg-emerald-500" />
               <span className="text-xs font-bold text-emerald-700">Current</span>
-              <span className="text-xs text-emerald-700/70 hidden sm:inline">\u2014 Partner attivo</span>
+              <span className="text-xs text-emerald-700/70 hidden sm:inline">— Partner attivo</span>
             </div>
             <div className="flex items-center gap-2 px-3 py-1.5 rounded-full bg-amber-50 border border-amber-200" data-testid="legend-standby">
               <span className="h-2.5 w-2.5 rounded-full bg-amber-500" />
               <span className="text-xs font-bold text-amber-700">Standby</span>
-              <span className="text-xs text-amber-700/70 hidden sm:inline">\u2014 In pausa / attenzione</span>
+              <span className="text-xs text-amber-700/70 hidden sm:inline">— In pausa / attenzione</span>
             </div>
             <div className="flex items-center gap-2 px-3 py-1.5 rounded-full bg-rose-50 border border-rose-200" data-testid="legend-old">
               <span className="h-2.5 w-2.5 rounded-full bg-rose-500" />
               <span className="text-xs font-bold text-rose-700">Old</span>
-              <span className="text-xs text-rose-700/70 hidden sm:inline">\u2014 Inattivo / terminato</span>
+              <span className="text-xs text-rose-700/70 hidden sm:inline">— Inattivo / terminato</span>
             </div>
           </div>
         </section>
 
-        {/* Revenue Progress  2026 annual target */}
+        {/* Revenue Progress — 2026 annual target */}
         <RevenueProgress target={3000000} current={1400000} year={2026} />
 
         {/* Controls */}
@@ -423,7 +423,7 @@ const Dashboard = () => {
               <Input
                 value={search}
                 onChange={(e) => setSearch(e.target.value)}
-                placeholder="Search partners by name, country, activity, email\u2026"
+                placeholder="Search partners by name, country, activity, email…"
                 data-testid="search-input"
                 className="pl-10 h-11 border-slate-200 focus-visible:ring-[#C9A84C]"
               />
@@ -528,7 +528,7 @@ const Dashboard = () => {
             className="bg-white border border-dashed border-slate-300 rounded-xl p-16 text-center"
             data-testid="empty-state"
           >
-            <div className="text-5xl mb-4">\ud83c\udf10</div>
+            <div className="text-5xl mb-4">🌐</div>
             <h3 className="font-display text-xl font-semibold text-[#0D1B2A] mb-2">
               No partners found
             </h3>
@@ -597,14 +597,14 @@ const Dashboard = () => {
         <div className="max-w-7xl mx-auto px-6 py-8 flex flex-col md:flex-row items-center justify-between gap-4">
           <div className="flex items-center gap-3 flex-wrap justify-center">
             <span className="font-display font-bold text-2xl qmd-logo-mark leading-none">qmd</span>
-            <span className="text-[#C9A84C] text-sm">\u00ae</span>
+            <span className="text-[#C9A84C] text-sm">®</span>
             <div className="h-6 w-px bg-slate-200 mx-2 hidden md:block" />
             <p className="text-sm text-slate-600 text-center md:text-left">
-              \u00a9 2026 <span className="font-medium text-[#0D1B2A]">Hakomed Italia</span> \u2014 qmd\u00ae Global Partner Network
+              © 2026 <span className="font-medium text-[#0D1B2A]">Hakomed Italia</span> — qmd® Global Partner Network
             </p>
           </div>
           <p className="text-xs text-slate-500 uppercase tracking-[0.16em]">
-            Precision \u00b7 Partnership \u00b7 Progress
+            Precision · Partnership · Progress
           </p>
         </div>
       </footer>
