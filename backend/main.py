@@ -72,6 +72,8 @@ class PartnerCreate(BaseModel):
     email: str = ""
     status: str = "Current"
     revenue_2026: Optional[float] = None
+    has_contract: bool = False
+    contract_expiration: Optional[str] = None
 
 class PartnerUpdate(BaseModel):
     name: Optional[str] = None
@@ -82,6 +84,8 @@ class PartnerUpdate(BaseModel):
     email: Optional[str] = None
     status: Optional[str] = None
     revenue_2026: Optional[float] = None
+    has_contract: Optional[bool] = None
+    contract_expiration: Optional[str] = None
 
 class LogCreate(BaseModel):
     text: str
@@ -255,6 +259,8 @@ async def create_partner(partner: PartnerCreate, user=Depends(get_current_user))
         "email": partner.email,
         "status": partner.status,
         "revenue_2026": partner.revenue_2026,
+        "has_contract": partner.has_contract,
+        "contract_expiration": partner.contract_expiration,
         "created_at": now,
         "updated_at": now,
     }

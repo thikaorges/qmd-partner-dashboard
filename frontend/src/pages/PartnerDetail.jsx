@@ -14,6 +14,8 @@ import {
   Clock,
   User,
   AlertCircle,
+  FileText,
+  CalendarDays,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -53,6 +55,20 @@ const formatDateTime = (iso) => {
   }
 };
 
+const formatDate = (iso) => {
+  if (!iso) return "N/A";
+  try {
+    const d = new Date(iso);
+    return d.toLocaleDateString("it-IT", {
+      day: "2-digit",
+      month: "long",
+      year: "numeric",
+    });
+  } catch {
+    return iso;
+  }
+};
+
 const InfoRow = ({ icon: Icon, label, value, valueClass = "text-[#0D1B2A]", testId }) => (
   <div
     className="flex items-start gap-3 p-4 rounded-xl bg-slate-50 border border-slate-200"
@@ -84,12 +100,20 @@ export default function PartnerDetail() {
   const [logText, setLogText] = useState("");
   const [submittingLog, setSubmittingLog] = useState(false);
 
+  // Contract editing state
+  const [editingContract, setEditingContract] = useState(false);
+  const [contractHas, setContractHas] = useState(false);
+  const [contractExpiration, setContractExpiration] = useState("");
+  const [savingContract, setSavingContract] = useState(false);
+
   const load = useCallback(async () => {
     setLoading(true);
     setError("");
     try {
       const p = await partnersApi.get(id);
       setPartner(p);
+      setContractHas(p.has_contract || false);
+      setContractExpiration(p.contract_expiration || "");
     } catch (err) {
       setError(formatApiError(err, "Partner non trovato"));
     } finally {
@@ -128,6 +152,23 @@ export default function PartnerDetail() {
       toast.error(formatApiError(err, "Impossibile aggiungere l'aggiornamento"));
     } finally {
       setSubmittingLog(false);
+    }
+  };
+
+  const handleSaveContract = async () => {
+    setSavingContract(true);
+    try {
+      const updated = await partnersApi.update(id, {
+        has_contract: contractHas,
+        contract_expiration: contractExpiration || null,
+      });
+      setPartner(updated);
+      setEditingContract(false);
+      toast.success("Contratto aggiornato");
+    } catch (err) {
+      toast.error(formatApiError(err, "Impossibile aggiornare il contratto"));
+    } finally {
+      setSavingContract(false);
     }
   };
 
@@ -261,6 +302,127 @@ export default function PartnerDetail() {
             testId="info-revenue"
           />
           <InfoRow icon={ActivityIcon} label="Status" value={status.label} valueClass={status.text} testId="info-status" />
+        </section>
+
+        {/* Contract section */}
+        <section
+          className="bg-white border border-slate-200 rounded-2xl p-5 md:p-6"
+          data-testid="partner-contract-section"
+        >
+          <div className="flex items-start gap-3 mb-5">
+            <div className="h-9 w-9 rounded-lg bg-[#0D1B2A] flex items-center justify-center flex-shrink-0">
+              <FileText className="h-4 w-4 text-[#C9A84C]" />
+            </div>
+            <div className="flex-1">
+              <h2
+                className="text-xl font-semibold text-[#0D1B2A] tracking-tight"
+                style={{ fontFamily: "'Outfit', ui-sans-serif, system-ui, sans-serif" }}
+              >
+                Contratto
+              </h2>
+              <p className="text-xs text-slate-500 mt-0.5">
+                Gestione stato contratto e data di scadenza.
+              </p>
+            </div>
+            {!editingContract && (
+              <Button
+                onClick={() => setEditingContract(true)}
+                data-testid="edit-contract-btn"
+                className="text-xs bg-[#0D1B2A] hover:bg-[#0D1B2A]/90 text-white"
+                size="sm"
+              >
+                Modifica
+              </Button>
+            )}
+          </div>
+
+          {!editingContract ? (
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <div className="flex items-start gap-3 p-4 rounded-xl bg-slate-50 border border-slate-200">
+                <div className="h-9 w-9 rounded-lg bg-white border border-slate-200 flex items-center justify-center flex-shrink-0">
+                  <FileText className="h-4 w-4 text-[#C9A84C]" />
+                </div>
+                <div>
+                  <p className="text-[10px] uppercase tracking-[0.16em] text-slate-500 font-semibold">Contratto</p>
+                  <p className={`mt-1 text-sm font-semibold ${partner.has_contract ? "text-emerald-600" : "text-slate-400"}`}>
+                    {partner.has_contract ? "S\u00ec" : "No"}
+                  </p>
+                </div>
+              </div>
+              <div className="flex items-start gap-3 p-4 rounded-xl bg-slate-50 border border-slate-200">
+                <div className="h-9 w-9 rounded-lg bg-white border border-slate-200 flex items-center justify-center flex-shrink-0">
+                  <CalendarDays className="h-4 w-4 text-[#C9A84C]" />
+                </div>
+                <div>
+                  <p className="text-[10px] uppercase tracking-[0.16em] text-slate-500 font-semibold">Data Scadenza</p>
+                  <p className="mt-1 text-sm font-semibold text-[#0D1B2A]">
+                    {formatDate(partner.contract_expiration)}
+                  </p>
+                </div>
+              </div>
+            </div>
+          ) : (
+            <div className="space-y-4" data-testid="contract-edit-form">
+              <div className="flex items-center gap-3">
+                <label className="text-sm font-medium text-[#0D1B2A]">Ha contratto:</label>
+                <button
+                  type="button"
+                  onClick={() => setContractHas(!contractHas)}
+                  data-testid="contract-toggle"
+                  className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors ${
+                    contractHas ? "bg-emerald-500" : "bg-slate-300"
+                  }`}
+                >
+                  <span
+                    className={`inline-block h-4 w-4 transform rounded-full bg-white transition-transform ${
+                      contractHas ? "translate-x-6" : "translate-x-1"
+                    }`}
+                  />
+                </button>
+                <span className="text-sm text-slate-600">{contractHas ? "S\u00ec" : "No"}</span>
+              </div>
+              <div className="flex flex-col sm:flex-row items-start sm:items-center gap-3">
+                <label className="text-sm font-medium text-[#0D1B2A] whitespace-nowrap">Data Scadenza:</label>
+                <Input
+                  type="date"
+                  value={contractExpiration}
+                  onChange={(e) => setContractExpiration(e.target.value)}
+                  data-testid="contract-expiration-input"
+                  className="max-w-[200px] border-slate-300 focus-visible:ring-[#C9A84C] focus-visible:border-[#C9A84C]"
+                />
+              </div>
+              <div className="flex gap-2 pt-2">
+                <Button
+                  onClick={handleSaveContract}
+                  disabled={savingContract}
+                  data-testid="save-contract-btn"
+                  className="bg-[#0D1B2A] hover:bg-[#0D1B2A]/90 text-white"
+                  size="sm"
+                >
+                  {savingContract ? (
+                    <>
+                      <Loader2 className="h-4 w-4 mr-2 animate-spin" />
+                      Salvataggio...
+                    </>
+                  ) : (
+                    "Salva"
+                  )}
+                </Button>
+                <Button
+                  onClick={() => {
+                    setEditingContract(false);
+                    setContractHas(partner.has_contract || false);
+                    setContractExpiration(partner.contract_expiration || "");
+                  }}
+                  variant="outline"
+                  size="sm"
+                  data-testid="cancel-contract-btn"
+                >
+                  Annulla
+                </Button>
+              </div>
+            </div>
+          )}
         </section>
 
         {/* Logs section */}

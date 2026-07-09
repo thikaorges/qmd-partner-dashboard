@@ -1,7 +1,7 @@
 import React from "react";
 import { motion } from "framer-motion";
 import { useNavigate } from "react-router-dom";
-import { Mail, Pencil, Trash2, TrendingUp, ArrowUpRight } from "lucide-react";
+import { Mail, Pencil, Trash2, TrendingUp, ArrowUpRight, FileText, AlertTriangle } from "lucide-react";
 import { STATUS_STYLES } from "@/lib/constants";
 
 const activityStyle = (activity) => {
@@ -27,12 +27,28 @@ const formatEUR = (value) => {
   }
 };
 
+const isContractExpiringSoon = (expirationDate) => {
+  if (!expirationDate) return false;
+  try {
+    const expDate = new Date(expirationDate);
+    const now = new Date();
+    const threeMonthsFromNow = new Date();
+    threeMonthsFromNow.setMonth(threeMonthsFromNow.getMonth() + 3);
+    return expDate > now && expDate <= threeMonthsFromNow;
+  } catch {
+    return false;
+  }
+};
+
 export const PartnerCard = ({ partner, onEdit, onDelete, index = 0 }) => {
   const status = STATUS_STYLES[partner.status] || STATUS_STYLES.Current;
   const navigate = useNavigate();
 
   const goToDetail = () => navigate(`/partner/${partner.id}`);
   const stop = (e) => e.stopPropagation();
+
+  const hasActiveContract = partner.has_contract === true;
+  const expiringSoon = hasActiveContract && isContractExpiringSoon(partner.contract_expiration);
 
   return (
     <motion.article
@@ -88,7 +104,7 @@ export const PartnerCard = ({ partner, onEdit, onDelete, index = 0 }) => {
         {partner.name}
       </h3>
 
-      <div className="mb-4">
+      <div className="mb-4 flex items-center gap-2 flex-wrap">
         <span
           className={`inline-flex items-center px-2.5 py-1 rounded-md text-[11px] font-semibold ring-1 ${activityStyle(
             partner.activity
@@ -97,6 +113,26 @@ export const PartnerCard = ({ partner, onEdit, onDelete, index = 0 }) => {
         >
           {partner.activity}
         </span>
+
+        {hasActiveContract && (
+          <span
+            className="inline-flex items-center gap-1 px-2 py-1 rounded-md text-[10px] font-bold bg-emerald-50 text-emerald-700 ring-1 ring-emerald-200"
+            data-testid={`partner-contract-badge-${partner.id}`}
+          >
+            <FileText className="h-3 w-3" />
+            Contratto
+          </span>
+        )}
+
+        {expiringSoon && (
+          <span
+            className="inline-flex items-center gap-1 px-2 py-1 rounded-md text-[10px] font-bold bg-amber-50 text-amber-700 ring-1 ring-amber-300"
+            data-testid={`partner-contract-warning-${partner.id}`}
+          >
+            <AlertTriangle className="h-3 w-3" />
+            Scadenza imminente
+          </span>
+        )}
       </div>
 
       <div className="h-px bg-gradient-to-r from-slate-200 via-[#C9A84C]/30 to-transparent mb-4" />
